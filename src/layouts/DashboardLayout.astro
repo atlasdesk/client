@@ -1,7 +1,9 @@
 ---
 import Footer from "../components/Footer.svelte";
-import Header from "../components/Header.svelte";
+import DashboardHeader from "../components/DashboardHeader.svelte";
+import Sidebar from "../components/Sidebar.svelte";
 import "../style/main.css"
+import DashboardFooter from "../components/DashboardFooter.svelte";
 
 interface Props {
 	title: string;
@@ -22,12 +24,15 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-primary-50 dark:bg-primary-900 h-screen flex flex-col">
-		<Header></Header>
-		<main class="max-w-screen-xl mx-auto w-full py-8">
-			<slot />
-		</main>
-		<Footer></Footer>
+	<body class="grid grid-cols-[auto_1fr] grid-rows-[min-content_auto] bg-gray-50 dark:bg-gray-950 h-screen">
+		<DashboardHeader client:load></DashboardHeader>
+		<Sidebar client:load></Sidebar>
+		<main class=" h-full flex flex-col justify-between">
+      <article class="p-4">
+				<slot></slot>
+			</article>
+			<DashboardFooter></DashboardFooter>
+    </main>
 	</body>
 </html>
 

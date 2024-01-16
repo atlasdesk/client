@@ -1,22 +1,34 @@
 <script lang="ts">
 	import { client } from "../lib/trpc-client"
+	import TicketSkeleton from "../components/TicketSkeleton.svelte";
 
-	let title: string;
-	let description: string;
 
-	async function createTicket() {
-		const response = await client.ticket.createTicket.mutate({
-			title,
-			description
-		})
-
-		console.log(response);
-		
-	}
+	const ticketRequest = client.tickets.getTickets.query({
+		cursor: 0,
+		limit: 10
+	})
 </script>
 
-<div class="flex flex-col gap-4 max-w-sm mx-auto">
-	<input type="text" bind:value={title} placeholder="Title">
-	<textarea bind:value={description} cols="30" rows="10" placeholder="Description"></textarea>
-	<button on:click={createTicket}>Create Ticket</button>
+<div class="flex flex-col gap-4">
+	{#await ticketRequest}
+		{#each {length: 10} as _, i}
+		<TicketSkeleton></TicketSkeleton>
+		{/each}
+	{:then tickets}
+		{#each tickets as ticket}
+		<div class="flex items-center justify-between">
+			<div class="flex flex-row gap-4 items-center">
+				<div>
+					<h4 class="text-base font-semibold">{ticket.title}</h4>
+					<span class="text-gray-500 text-sm">{ticket.description}</span>
+				</div>
+			</div>
+			<div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+		</div>
+		{/each}
+	{:catch}
+		<h1>
+			Something went wrong loading the tickets.
+		</h1>
+	{/await}
 </div>
