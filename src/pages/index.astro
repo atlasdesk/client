@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CreateTicketModule from '../modules/CreateTicketModule.svelte';
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<CreateTicketModule client:load></CreateTicketModule>
+	</main>
+</Layout>
