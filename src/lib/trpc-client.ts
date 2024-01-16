@@ -1,5 +1,7 @@
 import { createTRPCProxyClient, httpBatchLink  } from "@trpc/client"
 import type { AppRouter } from "@atlasdesk/server/client"
+import Cookies from "js-cookie";
+import {Buffer} from "buffer"
 
 export const client = createTRPCProxyClient<AppRouter>({
   links: [
@@ -8,7 +10,7 @@ export const client = createTRPCProxyClient<AppRouter>({
       // You can pass any HTTP headers you wish here
       async headers() {
         return {
-          authorization: "",
+          authorization: `Bearer ${Buffer.from(Cookies.get("accessToken") || "", "utf-8").toString("base64")}`,
         };
       },
     }),

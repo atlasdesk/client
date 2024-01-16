@@ -1,0 +1,10 @@
+---
+import MinimalLayout from '../../layouts/MinimalLayout.astro';
+import LoginModule from '../../modules/LoginModule.svelte';
+---
+
+<MinimalLayout title="Welcome to Astro.">
+	<main>
+		<LoginModule client:load></LoginModule>
+	</main>
+</MinimalLayout>
